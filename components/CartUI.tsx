@@ -18,28 +18,26 @@ function CartUI() {
     return data?.products || [];
   });
 
+  // Common Updated cart
+  const updateCartStorage = (updatedCart: ICartItem[]) => {
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify({ products: updatedCart }));
+  };
+
   const removeCartProduct = (id: number) => {
-    const cartData = JSON.parse(localStorage.getItem("cart") || "{}");
-    if (!cartData?.products) return;
-    const updatedCartData = cartData.products.filter(
-      (cart: ICartItem) => cart.id !== id,
-    );
+    const confirmDelete = window.confirm("Remove this item?"); // ✅ FIX
+    if (!confirmDelete) return;
 
-    setCart(updatedCartData);
-
-    localStorage.setItem("cart", JSON.stringify({ products: updatedCartData }));
+    const updatedCart = cart.filter((item) => item.id !== id);
+    updateCartStorage(updatedCart);
   };
 
   const quantityIncresedHandler = (id: number) => {
-    console.log("clicked id", id);
-
     const updatedCart = cart.map((item) =>
       item.id === id ? { ...item, quantity: item?.quantity + 1 } : item,
     );
 
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify({ products: updatedCart }));
-    console.log("updatedCartd", updatedCart);
+    updateCartStorage(updatedCart);
   };
 
   const quantityDecresedHandler = (id: number) => {
@@ -55,10 +53,7 @@ function CartUI() {
       })
       .filter(Boolean) as ICartItem[];
 
-      
-
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify({ products: updatedCart }));
+    updateCartStorage(updatedCart);
   };
 
   if (!cart || cart.length === 0) {
@@ -69,7 +64,7 @@ function CartUI() {
         </div>
         <h2 className="text-2xl font-bold font-heading">Your cart is empty</h2>
         <p className="text-muted-foreground">
-          Looks like you haven t added anything yet.
+          {" Looks like you haven't added anything yet."}
         </p>
         <button
           className="px-6 py-2 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-all cursor-pointer"
@@ -82,11 +77,9 @@ function CartUI() {
   }
 
   const totalPrice = cart.reduce(
-    (acc, item) => acc + (item.price * item.quantity || 0),
+    (acc, item) => acc + item.price * (item.quantity || 0),
     0,
   );
-
-  console.log("cart data", cart);
 
   return (
     <div className="">
@@ -126,7 +119,16 @@ function CartUI() {
                 <p className="text-muted-foreground text-sm uppercase tracking-wider">
                   {item.category}
                 </p>
-                <p className="mt-2 font-bold text-primary">${item.price}</p>
+
+                <p className="mt-2 font-bold text-primary">
+                  ${(item.price * (item.quantity || 0)).toFixed(2)}
+                </p>
+                {item.quantity > 1 && (
+                  <p className="text-xs text-muted-foreground">
+                    ${item.price} each
+                  </p>
+                )}
+
                 <div className="flex items-center bg-muted/50 w-fit rounded-full py-2 px-3 border border-border shadow-sm mt-2">
                   {/* Decrease Button */}
                   <button
@@ -192,8 +194,12 @@ function CartUI() {
             </div>
 
             <button
-              className="w-full py-4 bg-primary text-primary-foreground rounded-2xl font-bold hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-[0.98]"
-              onClick={() => router.push("/dashboard/checkout")}
+              disabled={!cart.length}
+              className="w-full py-4 bg-primary text-primary-foreground rounded-2xl font-bold hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-[0.98] cursor-pointer"
+              onClick={() => {
+                if (!cart.length) return;
+                router.push("/dashboard/checkout");
+              }}
             >
               Checkout Now
             </button>
