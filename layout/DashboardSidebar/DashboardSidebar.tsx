@@ -3,9 +3,7 @@
 import CartIcon from "@/ui/icons/SIdebarIcons/CartIcon";
 import DashboardIcon from "@/ui/icons/SIdebarIcons/DashboardIcon";
 import ProductsIcon from "@/ui/icons/SIdebarIcons/ProductsIcon";
-import { getCurrentUser } from "@/utils/auth";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 const commonPath = "/dashboard";
 
@@ -36,10 +34,10 @@ function DashboardSidebar() {
       <div className="p-6">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold">
-            G
+            P
           </div>
           <span className="font-heading text-xl font-bold text-foreground tracking-tight">
-            GeminiDev
+            Panelix
           </span>
         </div>
       </div>
