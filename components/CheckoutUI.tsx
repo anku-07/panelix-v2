@@ -81,7 +81,7 @@ const CheckoutUI = () => {
 
   useEffect(() => {
     if (!cart.length) {
-      router.push("/dashboard/products");
+      router.push("/dashboard/success");
     }
   }, [cart]);
 
