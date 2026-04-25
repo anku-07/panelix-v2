@@ -85,7 +85,7 @@ const ProductsUI = () => {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <div className="min-w-[500px]">
+        <div className="min-w-[500px] ">
           <CommonInput
             placeholder="Search Product"
             value={search}
