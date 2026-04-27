@@ -45,10 +45,12 @@ const CheckoutUI = () => {
       items: cart,
       total,
       user: {
+        
         firstName,
         lastName,
         email,
         address,
+
       },
       createdAt: new Date().toISOString(),
     };

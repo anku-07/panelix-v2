@@ -53,7 +53,7 @@ const ProductsUI = () => {
   const [tempCategories, setTempCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  //   Handel Checkbox
+  //  Handle Checkbox
   const handleCategoryChange = (category: string) => {
     setTempCategories((prev) =>
       prev.includes(category)
@@ -163,7 +163,10 @@ const ProductsUI = () => {
               if (existingCart.products) {
                 updatedCart = {
                   ...existingCart,
-                  products: [...existingCart.products, { ...item, quantity: 1 }],
+                  products: [
+                    ...existingCart.products,
+                    { ...item, quantity: 1 },
+                  ],
                 };
               } else {
                 updatedCart = {
